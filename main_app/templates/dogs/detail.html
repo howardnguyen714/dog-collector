@@ -39,6 +39,50 @@
     </table>
   </div>
 </div>
+
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ dog.name }}'s Favorite Walks</h3>
+    {% if dog.walks.count %}
+      {% for walk in dog.walks.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ walk.location }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Walks :(</h5>
+    {% endif %}
+  </div>
+  <!-- Available walks will come after this line -->
+  <div class="col s6">
+    <h3>Available walks</h3>
+    {% if walks.count %}
+      {% for walk in walks.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ walk.location }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_walk' dog.id walk.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{dog.name}} Already Has All walks Available</h5>
+    {% endif %}
+  </div>
+</div>
+
 <script>
   const dateEl = document.getElementById('id_date');
   M.Datepicker.init(dateEl, {
